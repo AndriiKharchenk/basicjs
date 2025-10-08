@@ -1,13 +1,45 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-</head>
-<body>
-  
-
-  <script src="script.js" ></script>
-</body>
+<html lang="uk">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login page</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="reset.css" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="login-page">
+      <div class="container">
+        <div class="wrapper">
+          <div class="left">
+            <img class="left-img" src="img/nastuh-abootalebi-yWwob8kwOCk-unsplash.jpg" width="400" height="400" alt="Alt text" />
+          </div>
+          <div class="right">
+            <div class="login-card">
+              <h2 class="login-card__title" >Вхід в акаунт</h2>
+              <form class="login-card__form">
+                <label class="login-card__form-label" for="email">Email</label>
+                <input class="login-card__form-input" type="email" id="email" placeholder="Введіть ваш email" required />
+                <label class="login-card__form-label" for="password">Пароль</label>
+                <input class="login-card__form-input" type="password" id="password" placeholder="Введіть пароль" required />
+                <div class="options">
+                  <label class="remember">
+                    <input type="checkbox" />
+                    Запам'ятати мене
+                  </label>
+                  <a class="remember-link" href="#" role="link">Забули пароль?</a>
+                </div>
+                <div class="login-card__buttons">
+                  <button class="btn login-card__btn-primary" type="submit">Увійти</button>
+                  <button class="btn login-card__btn-secondary" type="button">Регістрація</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+    <script src="script.js"></script>
+  </body>
 </html>
