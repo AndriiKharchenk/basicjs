@@ -56,11 +56,19 @@ body {
 
 .login-card__form-input {
   margin-bottom: 10px;
+  border: none;
+  box-shadow: 4px 4px 20px rgba(0, 0, 0, 0.1);
+  border-radius: 6px;
+}
+
+.login-card__form-input::placeholder {
+  color: #cfcfcf;
+  font-size: 12px;
 }
 
 .login-card__form-input:focus {
   outline: none;
-  border: 1px solid #4a90e2;
+  border-color: 1px #4a90e2;
   box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.2);
 }
 
@@ -72,6 +80,57 @@ body {
   margin-bottom: 30px;
   color: #333;
 }
+
+.remember input[type="checkbox"] {
+  display: none;
+}
+
+
+.remember {
+  position: relative;
+  padding-left: 30px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  font-size: 14px;
+}
+
+.custom-checkbox {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 16px;
+  border: 1px solid #1a1818;
+  border-radius: 4px;
+  background-color: #fff;
+  transition: all 0.2s;
+}
+
+.custom-checkbox::after {
+  content: "";
+  position: absolute;
+  left: 4px;
+  top: 0;
+  width: 6px;
+  height: 12px;
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.remember input[type="checkbox"]:checked + .custom-checkbox {
+  background-color: #4a90e2;
+  border-color: #4a90e2;
+}
+
+.remember input[type="checkbox"]:checked + .custom-checkbox::after {
+  opacity: 1;
+}
+
 
 .remember-link {
   color: #357ab8;
@@ -137,6 +196,16 @@ body {
   .login-card__buttons {
     flex-direction: column;
     gap: 15px;
+  }
+
+  .options {
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: start;
+  }
+
+  .remember-link {
+    margin-bottom: 25px;
   }
 }
 
