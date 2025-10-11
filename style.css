@@ -59,6 +59,7 @@ body {
   border: none;
   box-shadow: 4px 4px 20px rgba(0, 0, 0, 0.1);
   border-radius: 6px;
+  padding: 12px;
 }
 
 .login-card__form-input::placeholder {
