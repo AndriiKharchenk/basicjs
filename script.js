@@ -49,111 +49,80 @@ loadUsers();
 
 
 
-const URL = 'https://jsonplaceholder.typicode.com/users';
+const URL = 'https://jsonplaceholder.typicode.com/';
 
-const getUsers = async () => {
+const getData = async (type) => {
   try {
-    const response = await fetch(URL);
+    const response = await fetch(`${URL}${type}`);
     if (!response.ok) throw new Error(`HTTP ошибка: ${response.status}`);
 
-    const users = await response.json();
-    console.log('Количество пользователей:', users.length);
+    const data = await response.json();
 
-    console.log('Имена пользователей:');
-    users.forEach((user) => console.log(user.name));
+       if (type === 'users') {
+      console.log('Количество пользователей:', data.length);
+      console.log('Имена пользователей:');
+      data.forEach((user) => console.log(user.name));
 
-    const showFirstNUsers = (n) => {
-      console.log(`Первые ${n} пользователей:`);
-      console.table(users.slice(0, n));
-    };
-    showFirstNUsers(7);
+      console.log('Первые 5 пользователей:');
+      console.table(data.slice(0, 5));
 
-    const searchByName = (keyword) => {
-      const foundUser = users.find((user) => user.name.toLowerCase().includes(keyword.toLowerCase()));
-      if (foundUser) {
-        console.log(`Первый найденный пользователь по "${keyword}":`);
-        console.table([foundUser]);
-      } else {
-        console.log(`Пользователь с именем, содержащим "${keyword}", не найден.`);
+      const searchByName = (keyword) => {
+        const found = data.find((u) => u.name.toLowerCase().includes(keyword.toLowerCase()));
+        if (found) {
+          console.log(`Найден пользователь по "${keyword}":`);
+          console.table([found]);
+        } else {
+          console.log(`Пользователь "${keyword}" не найден.`);
+        }
+      };
+      searchByName('Leanne');
+    } else if (type === 'posts') {
+      console.log('Количество постов:', data.length);
+
+      console.log('Первые 5 постов:');
+      console.table(data.slice(0, 5).map((p) => p.title));
+
+      const showPostsByUser = (userId) => {
+        const userPosts = data.filter((p) => p.userId === userId);
+        console.log(`Посты пользователя ${userId}:`);
+        console.table(userPosts.map((p) => p.title));
+      };
+      showPostsByUser(1);
+    } else if (type === 'todos') {
+      const completed = data.filter((t) => t.completed);
+      console.log('Первые 10 выполненных задач:');
+      console.table(completed.slice(0, 10));
+
+      const firstUserTodo = data.find((t) => t.userId === 1);
+      if (firstUserTodo) {
+        console.log('Первая задача пользователя 1:', firstUserTodo);
       }
-    };
-    searchByName('Leanne');
-
-    const findUserByName = (name) => users.find((user) => user.name === name);
-    const Leanne = findUserByName('leanne');
-    if (Leanne) console.log('Найден пользователь Leanne:', Leanne);
-
-    return users;
-  } catch (error) {
-    console.error('Ошибка при загрузке пользователей:', error.message);
-  }
-};
-
-const POSTS_URL = 'https://jsonplaceholder.typicode.com/posts';
-
-const getPosts = async () => {
-  try {
-    const response = await fetch(POSTS_URL);
-    if (!response.ok) throw new Error(`HTTP ошибка: ${response.status}`);
-
-    const posts = await response.json();
-
-    const showFirstNPosts = (n) => {
-      console.log(`Первые ${n} постов:`);
-      console.table(posts.slice(0, n).map((p) => p.title));
-    };
-    showFirstNPosts(5);
-
-    const showPostsByUser = (userId) => {
-      const userPosts = posts.filter((post) => post.userId === userId);
-      console.log(`Посты пользователя ${userId}:`);
-      console.table(userPosts.map((p) => p.title));
-    };
-    showPostsByUser(1);
-
-    return posts;
-  } catch (error) {
-    console.error('Ошибка при загрузке постов:', error.message);
-  }
-};
-
-const TODOS_URL = 'https://jsonplaceholder.typicode.com/todos';
-
-const getTodos = async () => {
-  try {
-    const response = await fetch(TODOS_URL);
-    if (!response.ok) throw new Error(`HTTP ошибка: ${response.status}`);
-    const todos = await response.json();
-
-    const completed = todos.filter((todo) => todo.completed);
-    console.log('Выполненные задачи:');
-    console.table(completed.slice(0, 10));
-
-      const firstUserTodo = todos.find((todo) => todo.userId === 1);
-    if (firstUserTodo) {
-      console.log('Первая задача пользователя 1:', firstUserTodo);
+    } else {
+      console.log('Неизвестный тип данных');
     }
 
-    return todos;
+    return data;
   } catch (error) {
-    console.error('Ошибка при загрузке todos:', error.message);
+    console.error(`Ошибка при загрузке ${type}:`, error.message);
   }
 };
+
+getData('users');
+getData('posts');
+getData('todos');
 
 const miniAnalytics = async () => {
   try {
-    const [users, posts] = await Promise.all([getUsers(), getPosts()]);
-
+    const [users, posts] = await Promise.all([getData('users'), getData('posts')]);
     const postCount = posts.reduce((acc, post) => {
       acc[post.userId] = (acc[post.userId] || 0) + 1;
       return acc;
     }, {});
-
     console.log('Количество постов у каждого пользователя:', postCount);
 
     const user1 = users.find((u) => u.id === 1);
     if (user1) {
-      console.log(`Пользователь: ${user1.name}`);
+      console.log(`\nПользователь: ${user1.name}`);
       console.log(`Количество постов: ${postCount[1]}`);
     }
   } catch (error) {
@@ -161,7 +130,4 @@ const miniAnalytics = async () => {
   }
 };
 
-getUsers();
-getPosts();
-getTodos();
 miniAnalytics();
